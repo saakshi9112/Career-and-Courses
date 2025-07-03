@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Roadmap</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+      <nav class="custom-navbar">
+        <div class="custom-navbar-title">
+            <a href="index.html">Course and Career Recommendation</a></div>
+        <div class="custom-navbar-links">
+    <div class="custom-navbar-links">
+      <a href="session.html">Session History</a>
+    </div>
+        </div>
+    </nav>
+
+  <div class="container" id="roadmap-container">
+    <h2 id="career-title">Career Roadmap</h2>
+    <div id="roadmap-steps">Loading roadmap...</div>
+    <button id="back-to-results">Back to Results</button>
+  </div>
+  
+  <script>
+    // Retrieve the selected career from localStorage.
+    const careerName = localStorage.getItem('selectedCareer');
+    if (!careerName) {
+      document.getElementById('roadmap-steps').innerHTML =
+        "No career selected. Please return to the results page and choose a career.";
+    } else {
+      document.getElementById('career-title').innerText = careerName + " Roadmap";
+      
+      // Construct the prompt for Gemini API. We instruct it to return JSON with a "steps" array.
+      const prompt = `Provide a detailed career roadmap for someone interested in a career as a ${careerName}. 
+Return the response in JSON format with a "steps" array. Each step should have "title", "description", and "timeframe". 
+The roadmap should cover key milestones, estimated timeframes, necessary skills, and recommendations on courses or experiences.`;
+      
+      const payload = {
+        contents: [{ parts: [{ text: prompt }] }],
+      };
+      
+      const apiKey = 'AIzaSyC9Ohgx5LGyFoGcyb03bHS6U_lSorUD8ns'; // Replace with your actual API key.
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+      
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Network error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        let jsonString = data.candidates[0].content.parts[0].text;
+        // Remove markdown formatting if present.
+        if (jsonString.startsWith('```')) jsonString = jsonString.substring(3);
+        if (jsonString.endsWith('```')) jsonString = jsonString.slice(0, -3);
+        if (jsonString.trim().toLowerCase().startsWith('json')) jsonString = jsonString.trim().substring(4).trim();
+        try {
+          const roadmapData = JSON.parse(jsonString.trim());
+          displayRoadmap(roadmapData.steps);
+        } catch (err) {
+          document.getElementById('roadmap-steps').innerHTML = "Error parsing roadmap data. Please try again later.";
+          console.error("JSON parsing error:", err);
+        }
+      })
+      .catch(error => {
+        document.getElementById('roadmap-steps').innerHTML =
+          "Error generating roadmap. Please try again later.";
+        console.error("Gemini API error:", error);
+      });
+    }
+    
+function displayRoadmap(steps) {
+  if (!steps || !Array.isArray(steps)) {
+    document.getElementById('roadmap-steps').innerHTML = "No steps found in the roadmap.";
+    return;
+  }
+  let html = '<div class="stepper">';
+  steps.forEach((step, index) => {
+    html += `
+      <div class="step">
+        <div class="step-content">
+          <h3 class="step-title">${step.title}</h3>
+          <p class="step-description">${step.description}</p>
+          <p class="step-timeframe">${step.timeframe}</p>
+        </div>
+      </div>
+    `;
+  });
+  html += '</div>';
+  document.getElementById('roadmap-steps').innerHTML = html;
+}
+    
+    // Back to results button functionality.
+    document.getElementById('back-to-results').addEventListener('click', () => {
+      window.location.href = 'results.html';
+    });
+  </script>
+</body>
+</html>

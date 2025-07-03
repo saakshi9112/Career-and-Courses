@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Session History</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="custom-navbar">
+    <div class="custom-navbar-title">
+      <a href="index.html">Course and Career Recommendation</a>
+    </div>
+    <div class="custom-navbar-links">
+      <a href="sessionHistory.html">Session History</a>
+    </div>
+  </nav>
+  
+  <!-- Session History Container -->
+  <div class="history-container">
+    <h1>Session History</h1>
+    <div id="session-list"></div>
+    <button class="view-btn" onclick="window.location.href='index.html'">Back to Questionnaire</button>
+  </div>
+  
+  <!-- Modal for Session Details -->
+  <div id="session-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="modal-close">&times;</span>
+      <div id="session-details"></div>
+    </div>
+  </div>
+  
+  <script>
+    // Helper function for relative time.
+    function getRelativeTime(dateString) {
+      const now = new Date();
+      const past = new Date(dateString);
+      const diffMs = now - past;
+      const seconds = Math.floor(diffMs / 1000);
+      if (seconds < 60) return `${seconds} sec ago`;
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return `${minutes} min ago`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+      const days = Math.floor(hours / 24);
+      return `${days} day${days > 1 ? 's' : ''} ago`;
+    }
+    
+    // Retrieve session history from localStorage.
+    const sessionList = document.getElementById('session-list');
+    const sessions = JSON.parse(localStorage.getItem('sessionHistory')) || [];
+    
+    if (sessions.length === 0) {
+      sessionList.innerHTML = '<p>No sessions recorded yet. Complete a questionnaire to see your session history.</p>';
+    } else {
+      sessions.reverse().forEach((session, index) => {
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        const sessionNumber = sessions.length - index;
+        const timestamp = new Date(session.timestamp).toLocaleString();
+        let summary = '';
+        try {
+          if (session.resultData && session.resultData.careers && session.resultData.careers.length > 0) {
+            summary += 'Career: ' + session.resultData.careers[0].name;
+          }
+          if (session.resultData && session.resultData.courses && session.resultData.courses.length > 0) {
+            summary += ' | Course: ' + session.resultData.courses[0].courseName;
+          }
+        } catch(e) {
+          summary += 'No summary available.';
+        }
+        div.innerHTML = `
+          <div class="session-header">
+            <h3>Session ${sessionNumber}</h3>
+            <div class="session-timestamp">${timestamp}</div>
+          </div>
+          <p>${summary}</p>
+          <button class="view-btn" onclick="viewSession(${index})">View Details</button>
+        `;
+        sessionList.appendChild(div);
+      });
+    }
+    
+    // Modal handling.
+    const modal = document.getElementById("session-modal");
+    const modalClose = document.getElementById("modal-close");
+    modalClose.onclick = function() {
+      modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    }
+    
+    // Use the same questions array as the questionnaire.
+    const questions = [
+      "1. Which standard are you currently studying?",
+      "2. What are your hobbies?",
+      "3. What is your current interest?",
+      "4. Which subjects do you excel in?",
+      "5. What career paths have you considered so far?",
+      "6. What are your long-term goals?",
+      "7. What extracurricular activities do you participate in?",
+      "8. How do you prefer to learn? (Visual, Auditory, Kinesthetic)",
+      "9. What type of work environment do you prefer?",
+      "10. Any additional information you'd like to share about your aspirations?"
+    ];
+    
+    // Function to view full session details in the modal.
+    function viewSession(index) {
+      // Reverse sessions to get the original order.
+      const reversedSessions = sessions.slice().reverse();
+      const session = reversedSessions[index];
+      
+      let detailsHTML = `<h2>Session Details</h2>`;
+      detailsHTML += `<p class="timestamp-relative">Submitted ${getRelativeTime(session.timestamp)}</p>`;
+      
+      // Collapsible section for Questions and Answers.
+      detailsHTML += `<details open>
+                        <summary>Questions and Answers</summary>
+                        <div class="section-content">
+                          <ul>`;
+      questions.forEach((q, i) => {
+        const answer = session.answers['q' + (i + 1)] || 'No answer';
+        detailsHTML += `<li><strong>${q}</strong><br>Answer: ${answer}</li>`;
+      });
+      detailsHTML += `     </ul>
+                        </div>
+                      </details>`;
+      
+      // Collapsible section for Career Recommendations.
+      if (session.resultData && session.resultData.careers && session.resultData.careers.length > 0) {
+        detailsHTML += `<details>
+                          <summary>Career Recommendations</summary>
+                          <div class="section-content">
+                            <ul>`;
+        session.resultData.careers.forEach(career => {
+          detailsHTML += `<li><strong>${career.name}</strong><br>Description: ${career.description}</li>`;
+        });
+        detailsHTML += `     </ul>
+                          </div>
+                        </details>`;
+      }
+      
+      // Collapsible section for Course Recommendations.
+      if (session.resultData && session.resultData.courses && session.resultData.courses.length > 0) {
+        detailsHTML += `<details>
+                          <summary>Course Recommendations</summary>
+                          <div class="section-content">
+                            <ul>`;
+        session.resultData.courses.forEach(course => {
+          detailsHTML += `<li><strong>${course.courseName}</strong><br>Description: ${course.description}<br><a href="${course.link}" target="_blank">Course Link</a></li>`;
+        });
+        detailsHTML += `     </ul>
+                          </div>
+                        </details>`;
+      }
+      
+      document.getElementById('session-details').innerHTML = detailsHTML;
+      modal.style.display = "block";
+    }
+  </script>
+</body>
+</html>

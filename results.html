@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Recommended Careers & Courses</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="custom-navbar">
+    <div class="custom-navbar-title">
+      <a href="index.html">Course and Career Recommendation</a>
+    </div>
+    <div class="custom-navbar-links">
+      <a href="session.html">Session History</a>
+    </div>
+  </nav>
+
+  <div class="container" id="results-container">
+    <!-- Results will be loaded here -->
+  </div>
+  
+  <div class="container" style="text-align: center; margin-top: 20px;">
+    <button id="back-btn">Back to Chat</button>
+  </div>
+
+  <script>
+    // Feedback functionality
+    document.addEventListener('DOMContentLoaded', () => {
+      let selectedRating = 0;
+      const stars = document.querySelectorAll('.star');
+      const feedbackComment = document.getElementById('feedback-comment');
+      const submitFeedbackBtn = document.getElementById('submit-feedback');
+      const feedbackMessage = document.getElementById('feedback-message');
+
+      // Set up star rating selection
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          selectedRating = parseInt(star.getAttribute('data-rating'));
+          updateStars(selectedRating);
+        });
+      });
+
+      function updateStars(rating) {
+        stars.forEach(star => {
+          const starRating = parseInt(star.getAttribute('data-rating'));
+          if (starRating <= rating) {
+            star.classList.add('selected');
+          } else {
+            star.classList.remove('selected');
+          }
+        });
+      }
+
+      // On click of submit feedback button, save feedback in localStorage and display thank you message
+      submitFeedbackBtn.addEventListener('click', () => {
+        if (selectedRating === 0) {
+          feedbackMessage.textContent = "Please select a rating before submitting.";
+          feedbackMessage.style.color = "red";
+          return;
+        }
+        const comment = feedbackComment.value;
+        const feedback = {
+          rating: selectedRating,
+          comment: comment,
+          date: new Date().toISOString()
+        };
+        localStorage.setItem('userFeedback', JSON.stringify(feedback));
+        feedbackMessage.textContent = "Thank you for your feedback!";
+        feedbackMessage.style.color = "#28a745";
+        // Disable further changes after submission
+        submitFeedbackBtn.disabled = true;
+        stars.forEach(star => star.style.pointerEvents = 'none');
+        feedbackComment.disabled = true;
+        displaySavedFeedback();
+      });
+      
+      // Function to display saved feedback from localStorage
+      function displaySavedFeedback() {
+        const savedFeedback = localStorage.getItem('userFeedback');
+        if (savedFeedback) {
+          const feedback = JSON.parse(savedFeedback);
+          let feedbackDisplay = document.querySelector('.feedback-display');
+          if (!feedbackDisplay) {
+            feedbackDisplay = document.createElement('div');
+            feedbackDisplay.className = 'feedback-display';
+            document.querySelector('.feedback-container').appendChild(feedbackDisplay);
+          }
+          feedbackDisplay.innerHTML = `<h3>Your Previous Feedback:</h3>
+            <p><strong>Rating:</strong> ${feedback.rating} stars</p>
+            <p><strong>Comment:</strong> ${feedback.comment}</p>
+            <p><small>Submitted on: ${new Date(feedback.date).toLocaleString()}</small></p>`;
+        }
+      }
+      
+      // Display saved feedback on page load, if any
+      displaySavedFeedback();
+    });
+
+    // Load and display result data from localStorage
+    const resultDataString = localStorage.getItem('resultData');
+    const container = document.getElementById('results-container');
+
+    if (resultDataString) {
+      const resultData = JSON.parse(resultDataString);
+      let html = '<h2>Recommended Career Paths</h2><ul>';
+      resultData.careers.forEach(career => {
+        html += `<li><strong>${career.name}</strong>: ${career.description}</li>
+                  <button class="roadmap-btn" data-career="${career.name}">View Roadmap</button>`;
+      });
+      html += '</ul><h2>Recommended Courses</h2><ul>';
+      resultData.courses.forEach(course => {
+        html += `<li><strong>${course.courseName}</strong>: ${course.description} 
+                 <a href="${course.link}" target="_blank">Course Link</a></li>`;
+      });
+      html += '</ul>';
+      container.innerHTML = html;
+    } else {
+      container.innerHTML = '<p>No results found. Please complete the questionnaire first.</p>';
+    }
+
+    // Attach event listener to "View Roadmap" buttons
+    document.querySelectorAll('.roadmap-btn').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const careerName = e.target.getAttribute('data-career');
+        localStorage.setItem('selectedCareer', careerName);
+        window.location.href = 'roadmap.html';
+      });
+    });
+
+    // Back to Chat button functionality
+    const backBtn = document.getElementById('back-btn');
+    backBtn.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

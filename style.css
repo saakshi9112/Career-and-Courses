@@ -1,0 +1,808 @@
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #f5f7fa;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+}
+
+/* Scrollbar Styling for Webkit Browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+/* Chatbot Page (index.html) Styles */
+.chat-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 60%;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#chat-log {
+  padding: 20px;
+  height: 300px;
+  overflow-y: auto;
+  border-bottom: 1px solid #eee;
+}
+
+.input-container {
+  display: flex;
+  padding: 10px;
+  background: #f9f9f9;
+}
+
+#user-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+#send-btn {
+  margin-left: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+#send-btn:hover {
+  background: #0056b3;
+}
+
+/* Message Bubbles */
+.message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 4px;
+  line-height: 1.4;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.message.bot {
+  background: #e9ecef;
+  color: #333;
+  align-self: flex-start;
+}
+
+.message.user {
+  background: #007bff;
+  color: #fff;
+  align-self: flex-end;
+}
+
+/* Results Page (results.html) Styles */
+.container {
+  padding: 30px;
+  max-width: 800px;
+  margin: 50px auto;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.container h2 {
+  color: #007bff;
+  margin-top: 0;
+}
+
+.container ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.container li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.container li:last-child {
+  border-bottom: none;
+}
+
+.container a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.container a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+  .chat-container {
+    width: 95%;
+  }
+  .container {
+    margin: 20px;
+    padding: 20px;
+  }
+}
+/* Feedback Section Styles */
+.feedback-container {
+  margin-top: 30px;
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+
+.feedback-container h2 {
+  margin-bottom: 10px;
+  color: #007bff;
+}
+
+.stars {
+  display: flex;
+  gap: 5px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.star {
+  color: #ccc;
+  transition: color 0.2s;
+}
+
+.star.selected,
+.star:hover,
+.star:hover ~ .star {
+  color: #ffc107;
+}
+
+#feedback-comment {
+  width: 100%;
+  height: 80px;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+#submit-feedback {
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#feedback-message {
+  margin-top: 10px;
+  font-weight: bold;
+}
+/* Back Button Styles */
+#back-btn {
+  padding: 10px 20px;
+  border: none;
+  background: #28a745;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+#back-btn:hover {
+  background: #1e7e34;
+}
+
+/* Disabled input styling for chat page */
+input:disabled, button:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+}
+/* Existing global and container styles... */
+
+/* Roadmap Button Styling (Results Page) */
+.roadmap-btn {
+  margin-left: 10px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #17a2b8;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.roadmap-btn:hover {
+  background-color: #138496;
+}
+
+/* Roadmap Page Styles (roadmap.html) */
+#roadmap-container {
+  max-width: 800px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#roadmap-container h2 {
+  color: #007bff;
+  margin-top: 0;
+}
+
+#roadmap-content {
+  margin-top: 20px;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-wrap; /* preserves newlines and spacing */
+}
+
+/* Back to Results Button on Roadmap Page */
+#back-to-results {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  background: #28a745;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+#back-to-results:hover {
+  background: #1e7e34;
+}
+/* Progress Bar Styling */
+.progress-container {
+  width: 100%;
+  background: #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  position: relative;
+  height: 20px;
+}
+
+.progress-indicator {
+  height: 100%;
+  background: #007bff;
+  width: 0%;
+  border-radius: 8px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #fff;
+  line-height: 20px;
+}
+/* Progress Bar Styling */
+.progress-container {
+  width: 100%;
+  background: #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  position: relative;
+  height: 20px;
+}
+
+.progress-indicator {
+  height: 100%;
+  background: #007bff;
+  width: 0%;
+  border-radius: 8px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #fff;
+  line-height: 20px;
+}
+
+/* Restart Button Styling */
+.restart-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#restart-btn {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  margin-bottom:20px;
+}
+
+#restart-btn:hover {
+  background-color: #c82333;
+}
+/* Progress Bar Styling */
+.progress-container {
+  width: 100%;
+  background: #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  position: relative;
+  height: 20px;
+}
+
+.progress-indicator {
+  height: 100%;
+  background: #007bff;
+  width: 0%;
+  border-radius: 8px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #fff;
+  line-height: 20px;
+}
+
+/* Restart Button Styling */
+.restart-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#restart-btn {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+#restart-btn:hover {
+  background-color: #c82333;
+}
+
+/* Preview Container Styling */
+.preview-container {
+  background: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.preview-container h2 {
+  margin-top: 0;
+}
+
+#preview-content {
+  margin-bottom: 15px;
+}
+
+#final-submit-btn,
+#edit-responses-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+#final-submit-btn:hover {
+  background-color: #0056b3;
+}
+
+#edit-responses-btn {
+  background-color: #dc3545;
+}
+
+#edit-responses-btn:hover {
+  background-color: #c82333;
+}
+/* ----------------------- Preview Container Styling ----------------------- */
+.preview-container {
+  background: #ffffff;
+  border: 2px solid #007bff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.preview-container h2 {
+  font-size: 1.8em;
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.preview-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.preview-container li {
+  margin-bottom: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+  transition: background 0.3s;
+}
+
+.preview-container li:hover {
+  background: #e9ecef;
+}
+
+.preview-container li strong {
+  color: #343a40;
+  font-size: 1.1em;
+}
+
+/* ----------------------- Inline Editing Styling ----------------------- */
+.preview-container li textarea.edit-answer {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1em;
+  resize: vertical;
+  min-height: 60px;
+  margin-top: 10px;
+  transition: border-color 0.3s;
+}
+
+.preview-container li textarea.edit-answer:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* ----------------------- Button Styling in Preview ----------------------- */
+.preview-container button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background 0.3s;
+  margin-right: 10px;
+}
+
+.preview-container button:hover {
+  background: #0056b3;
+}
+
+.preview-container button#cancel-edit-btn {
+  background: #dc3545;
+}
+
+.preview-container button#cancel-edit-btn:hover {
+  background: #c82333;
+}
+
+/* Loader Spinner Styling */
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #007bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+ .custom-navbar {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .custom-navbar-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .custom-navbar-links {
+            display: flex;
+        }
+          .custom-navbar-title a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .custom-navbar-links a {
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .custom-navbar-links a:hover {
+            background-color: #555;
+        }
+
+.history-container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .history-item {
+      border-left: 4px solid #007bff;
+      padding: 15px;
+      margin-bottom: 15px;
+      transition: background 0.3s;
+    }
+    .history-item:hover {
+      background: #e9ecef;
+    }
+    .session-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .session-header h3 {
+      margin: 0;
+    }
+    .session-timestamp {
+      font-size: 0.9em;
+      color: #666;
+    }
+    .view-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .view-btn:hover {
+      background: #0056b3;
+    }
+    /* Modal Styling */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      overflow: auto;
+      padding: 20px;
+    }
+    .modal-content {
+      background: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      max-width: 600px;
+      max-height: 80vh;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow-y: auto;
+      position: relative;
+    }
+    .modal-content h2,
+    .modal-content h3 {
+      color: #007bff;
+      margin-top: 0;
+    }
+    .modal-content ul {
+      list-style: none;
+      padding: 0;
+    }
+    .modal-content li {
+      margin-bottom: 10px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-left: 4px solid #007bff;
+      border-radius: 4px;
+    }
+    .modal-content li strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .close {
+      color: #aaa;
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: #000;
+    }
+    .timestamp-relative {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 15px;
+    }
+    /* Collapsible Details Styling */
+    details {
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    details summary {
+      background: #f0f0f0;
+      padding: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    details .section-content {
+      padding: 10px;
+      background: #fff;
+    }
+
+
+        /* Container for the roadmap page */
+#roadmap-container {
+  max-width: 800px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#career-title {
+  color: #007bff;
+  margin-top: 0;
+  text-align: center;
+}
+
+/* Stepper Styles */
+.stepper {
+  position: relative;
+  padding-left: 40px;
+  margin-top: 20px;
+}
+
+.step {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.step-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #007bff;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.step-content {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.step-title {
+  margin: 0 0 5px;
+  color: #007bff;
+}
+
+.step-description,
+.step-timeframe {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Vertical line in the stepper */
+.stepper::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: #007bff;
+}
+
+/* Back to Results Button */
+#back-to-results {
+  display: block;
+  margin: 30px auto 0;
+  padding: 10px 20px;
+  border: none;
+  background: #28a745;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+#back-to-results:hover {
+  background: #1e7e34;
+}
